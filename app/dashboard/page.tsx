@@ -6,12 +6,15 @@ export default function Dashboard() {
   const [sessionId, setSessionId] = useState("");
 
   const createSession = async () => {
+console.log("Button clicked 🚀");
+
+
     const res = await fetch("http://localhost:5000/session/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ mentorId: "123" }),
+      body: JSON.stringify({ mentorId: crypto.randomUUID()  }),
     });
 
     const data = await res.json();
@@ -43,7 +46,17 @@ export default function Dashboard() {
       </button>
 
       {sessionId && (
-        <p className="mt-2">Session ID: {sessionId}</p>
+        <>
+           <p className="mt-2">Session ID: {sessionId}</p>
+
+          {/* 🔥 NEW: link to editor */}
+          <a
+            href={`/editor/${sessionId}`}
+            className="text-blue-500 underline block mt-2"
+          >
+            Go to Editor
+          </a>
+        </>
       )}
 
       <input
