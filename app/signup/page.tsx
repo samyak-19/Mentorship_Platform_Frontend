@@ -13,6 +13,13 @@ export default function Signup() {
       password,
     });
 
+    console.log("Signup response:", data, error);
+
+     if (error) {
+    alert("Signup error: " + error.message);
+    return;
+  }
+
     if (data.user) {
     const { error: profileError } = await supabase
       .from("profiles")

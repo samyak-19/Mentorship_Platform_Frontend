@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
-  const [sessionId, setSessionId] = useState("");
+const [sessionId, setSessionId] = useState("");
 
-  const createSession = async () => {
+const createSession = async () => {
 console.log("Button clicked 🚀");
 
 
@@ -19,7 +20,10 @@ console.log("Button clicked 🚀");
 
     const data = await res.json();
     setSessionId(data.sessionId);
+    router.push(`/editor/${data.sessionId}`);
   };
+
+  const router = useRouter();
 
   const joinSession = async () => {
     const res = await fetch("http://localhost:5000/session/join", {
@@ -31,7 +35,14 @@ console.log("Button clicked 🚀");
     });
 
     const data = await res.json();
+
+    if (res.ok) {
+    alert("Joined successfully!");
+
+    router.push(`/editor/${sessionId}`);
+  } else {
     alert(data.message);
+  }
   };
 
   return (
