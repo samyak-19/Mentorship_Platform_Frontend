@@ -445,144 +445,148 @@ if (sessionLoading) {
   return <p className="p-10">Loading session...</p>;}
 
   return (
-    <div className="flex h-screen">
-      
-      {/* LEFT SIDE → CODE EDITOR */}
-      <div className="w-2/3 p-4">
+  <div className="min-h-screen bg-gray-100 flex flex-col">
+
+    {/* 🔥 HEADER (LIKE DASHBOARD) */}
+    <div className="flex justify-between items-center px-6 py-4 bg-white shadow">
+      <h1 className="text-xl font-bold text-gray-500">
+        Mentor<span className="text-green-600">Ship</span>
+      </h1>
+
+      <div className="text-sm text-gray-600">
+        {user?.email} ({role})
+      </div>
+    </div>
+
+    {/* 🔥 MAIN LAYOUT */}
+    <div className="flex flex-1 p-4 gap-4">
+
+      {/* 🔥 LEFT → CODE EDITOR */}
+      <div className="w-2/3 bg-white rounded-xl shadow p-3 text-gray-600">
+        <h2 className="font-semibold mb-2">💻 Code Editor</h2>
+
         <Editor
-          height="80vh"
+          height="75vh"
           defaultLanguage="javascript"
           value={code}
           onChange={handleChange}
         />
       </div>
 
-      {/* RIGHT SIDE → CHAT +video */}
-      <div className="w-1/3 border-l p-4 flex flex-col">
+      {/* 🔥 RIGHT PANEL */}
+      <div className="w-1/3 flex flex-col gap-4">
 
-         {/* 🔥 VIDEO UI (NEW) */}
-        <div className="mb-4">
+        {/* 🎥 VIDEO CARD */}
+        <div className="bg-white rounded-xl shadow p-4">
+          <h2 className="font-semibold mb-2 text-gray-600">🎥 Video Call</h2>
 
-  {/* 🔥 ONLY MENTOR CAN SEE START CALL */}
-  {role === "mentor" && (
-    <button
-      onClick={startCall}
-      className="bg-green-500 text-white px-4 py-2 mb-2"
-    >
-      Start Call
-    </button>
-  )}
+          {/* START CALL (MENTOR ONLY) */}
+          {role === "mentor" && (
+            <button
+              onClick={startCall}
+              className="w-full bg-green-600 hover:bg-green-700 text-white p-2 rounded mb-3"
+            >
+              Start Call
+            </button>
+          )}
 
-  {/* 🔥 CAMERA + MIC CONTROLS (FOR BOTH USERS) */}
-  <div className="flex gap-2 mb-2">
-    <button
-      onClick={toggleCamera}
-      
-      className="bg-gray-700 text-white px-3 py-1"
-    >
-      {cameraOn ? "Turn Camera Off" : "Turn Camera On"}
-    </button>
+          {/* CONTROLS */}
+          <div className="flex gap-2 mb-3">
+            <button
+              onClick={toggleCamera}
+              className="flex-1 bg-gray-700 text-white p-2 rounded text-sm"
+            >
+              {cameraOn ? "Camera Off" : "Camera On"}
+            </button>
 
-    <button
-      onClick={toggleMic}
-      className="bg-gray-700 text-white px-3 py-1"
-    >
-      {micOn ? "Mute Mic" : "Unmute Mic"}
-    </button>
-  </div>
+            <button
+              onClick={toggleMic}
+              className="flex-1 bg-gray-700 text-white p-2 rounded text-sm"
+            >
+              {micOn ? "Mute" : "Unmute"}
+            </button>
+          </div>
 
-      <div className="flex gap-2">
-        {/* 🔥 YOUR VIDEO */}
-        <div className="w-1/2">
-          <p className="text-xs text-center">You</p>
-          <video
-            ref={localVideoRef}
-            autoPlay
-            muted
-            className="w-full border rounded"
-          />
-      </div>
+          {/* VIDEO */}
+          <div className="flex gap-2">
+            <div className="w-1/2">
+              <p className="text-xs text-center mb-1">You</p>
+              <video
+                ref={localVideoRef}
+                autoPlay
+                muted
+                className="w-full rounded border"
+              />
+            </div>
 
-        {/* 🔥 OTHER USER VIDEO */}
-        <div className="w-1/2">
-          <p className="text-xs text-center">Other User</p>
-          <video
-            ref={remoteVideoRef}
-            autoPlay
-            className="w-full border rounded"
-          />
+            <div className="w-1/2">
+              <p className="text-xs text-center mb-1">Other</p>
+              <video
+                ref={remoteVideoRef}
+                autoPlay
+                className="w-full rounded border"
+              />
+            </div>
           </div>
         </div>
-      </div>
 
-        <h2 className="font-bold mb-2">Chat</h2>
+        {/* 💬 CHAT CARD */}
+        <div className="bg-white rounded-xl shadow flex flex-col p-4 flex-1">
+          <h2 className="font-semibold mb-2 text-gray-600">💬 Chat</h2>
 
-        {/*  CHAT UI */}
-        <div className="flex-1 overflow-y-auto p-2 space-y-2">
-          {messages.map((msg, index) => {
-            // ✅ CHECK IF MESSAGE IS FROM CURRENT USER
-            const isSystem = msg.user?.id === "system";
-            const isMe = user?.id === msg.user?.id;
+          {/* MESSAGES */}
+          <div className="flex-1 overflow-y-auto space-y-2 pr-1">
+            {messages.map((msg, index) => {
+              const isSystem = msg.user?.id === "system";
+              const isMe = user?.id === msg.user?.id;
 
-        if (isSystem) {
-        return (
-        <div key={index} className="text-center text-xs text-gray-500">
-          {msg.message} ({msg.time})
-        </div>
-      );
-    }
+              if (isSystem) {
+                return (
+                  <div key={index} className="text-center text-xs text-gray-400">
+                    {msg.message}
+                  </div>
+                );
+              }
 
-            return (
-              <div
-                key={index}
-                className={`flex ${isMe ? "justify-end" : "justify-start"}`}>
+              return (
                 <div
-                  className={`
-                    max-w-[70%] p-3 rounded-lg shadow
-                    ${
-                      isMe
-                        ? "bg-blue-500 text-white" // 🔥 your messages
-                        : "bg-gray-200 text-black" // 🔥 others
-                    }
-                  `}
+                  key={index}
+                  className={`flex ${isMe ? "justify-end" : "justify-start"}`}
                 >
-                  {/* 🔥 USER NAME + ROLE */}
-                  <p className="text-xs font-semibold">
-                    {isMe ? "You" : msg.user?.email || "User"}{" "}
-                    <span className="italic text-[10px]">
-                      ({msg.user?.role || "student"})
-                    </span>
-                  </p>
-
-                  {/* 🔥 MESSAGE TEXT */}
-                  <p className="text-sm">{msg.message}</p>
-
-                  {/* 🔥 TIME */}
-                  <p className="text-[10px] text-right opacity-70">
-                    {msg.time}
-                  </p>
+                  <div
+                    className={`px-3 py-2 rounded-lg text-sm max-w-[70%]
+                    ${isMe ? "bg-green-500 text-white" : "bg-gray-200"}`}
+                  >
+                    <p className="text-black">{msg.message}</p>
+                    <p className="text-[10px] opacity-80 text-right text-gray-600">
+                      {msg.time}
+                    </p>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
-          <div ref={chatEndRef}></div>
+              );
+            })}
+            <div ref={chatEndRef}></div>
+          </div>
+
+          {/* INPUT */}
+          <div className="flex mt-3 gap-2">
+            <input
+              className="flex-1 border p-2 rounded"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Type message..."
+            />
+            <button
+              onClick={sendMessage}
+              className="bg-blue-600 text-white px-4 rounded"
+            >
+              Send
+            </button>
+          </div>
         </div>
 
-        {/* INPUT */}
-        <div className="mt-2 flex">
-          <input
-            className="border p-2 flex-1"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-          <button
-            className="bg-blue-500 text-white px-4"
-            onClick={sendMessage}
-          >
-            Send
-          </button>
-        </div>
       </div>
     </div>
-  );
+  </div>
+);
 }
