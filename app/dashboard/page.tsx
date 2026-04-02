@@ -1,13 +1,54 @@
 "use client";
 
-import { useState } from "react";
+import { useState,useEffect } from "react";
+import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 
 export default function Dashboard() {
+const router = useRouter();  
+const [loading, setLoading] = useState(true);
 const [sessionId, setSessionId] = useState("");
+
+useEffect(() => {
+    const checkUser = async () => {
+      const { data } = await supabase.auth.getSession();
+
+      if (!data.session) {
+        router.push("/login");
+      } else {
+        // ✅ LOGGED IN → allow dashboard
+        setLoading(false);
+      }
+    };
+
+    checkUser();
+  }, []);
+
+  // 🔥 NEW: SHOW LOADING UNTIL AUTH CHECK COMPLETE
+  if (loading) {
+  return <p className="p-10">Checking authentication...</p>;
+  }
+
+  const handleLogout = async () => {
+  await supabase.auth.signOut(); // 🔥 clear session
+
+  alert("Logged out successfully");
+
+  router.push("/login"); // 🔥 redirect to login
+};
 
 const createSession = async () => {
 console.log("Button clicked 🚀");
+
+ const { data } = await supabase.auth.getSession();
+  const user = data.session?.user;
+
+  if (!user) {
+    alert("User not logged in ❌");
+    return;
+  }
+
+  console.log("CREATING SESSION WITH USER:", user.id); 
 
 
     const res = await fetch("http://localhost:5000/session/create", {
@@ -15,15 +56,14 @@ console.log("Button clicked 🚀");
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ mentorId: crypto.randomUUID()  }),
+      body: JSON.stringify({ mentorId:user.id,}),
     });
 
-    const data = await res.json();
-    setSessionId(data.sessionId);
-    router.push(`/editor/${data.sessionId}`);
+    const dataRes = await res.json();
+    console.log("SESSION CREATED:", dataRes);
+    setSessionId(dataRes.sessionId);
+    router.push(`/editor/${dataRes.sessionId}`);
   };
-
-  const router = useRouter();
 
   const joinSession = async () => {
     const res = await fetch("http://localhost:5000/session/join", {
@@ -47,6 +87,13 @@ console.log("Button clicked 🚀");
 
   return (
     <div className="p-10">
+
+      <button
+        onClick={handleLogout}
+        className="bg-red-500 text-white px-4 py-2 mb-4"
+      >
+        Logout
+      </button>
       <h1 className="text-xl font-bold">Dashboard</h1>
 
       <button
