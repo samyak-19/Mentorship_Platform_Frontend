@@ -28,7 +28,7 @@ export default function Home() {
     checkUser();
 
     // 🔥 STEP 2: KEEP YOUR SERVER TEST (OPTIONAL)
-    fetch("http://localhost:5000")
+    fetch("https://mentorship-platform-backend-hbm1.onrender.com")
       .then(res => res.text())
       .then(data => setMessage(data));
 

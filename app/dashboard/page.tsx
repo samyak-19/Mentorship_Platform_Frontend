@@ -52,7 +52,7 @@ console.log("Button clicked 🚀");
   console.log("CREATING SESSION WITH USER:", user.id); 
 
 
-    const res = await fetch("http://localhost:5000/session/create", {
+    const res = await fetch("https://mentorship-platform-backend-hbm1.onrender.com/session/create", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -67,7 +67,7 @@ console.log("Button clicked 🚀");
   };
 
   const joinSession = async () => {
-    const res = await fetch("http://localhost:5000/session/join", {
+    const res = await fetch("https://mentorship-platform-backend-hbm1.onrender.com/session/join", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

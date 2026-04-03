@@ -75,7 +75,7 @@ export default function CodeEditor() {
     
     if (socketRef.current) return;
 
-    const newSocket = io("http://localhost:5000");
+    const newSocket = io("https://mentorship-platform-backend-hbm1.onrender.com");
     socketRef.current = newSocket;
 
     setMessages([]);
@@ -86,7 +86,7 @@ export default function CodeEditor() {
   });
 
     // 🔥 LOAD OLD MESSAGES
-    fetch(`http://localhost:5000/messages/${sessionId}`)
+    fetch(`https://mentorship-platform-backend-hbm1.onrender.com/messages/${sessionId}`)
       .then((res) => res.json())
       .then((data) => {
         console.log("Fetched messages:", data);
@@ -457,7 +457,7 @@ const leaveSession = () => {
 
 // 🔥 END SESSION (MENTOR ONLY)
 const endSession = async () => {
-  await fetch("http://localhost:5000/session/end", {
+  await fetch("https://mentorship-platform-backend-hbm1.onrender.com/session/end", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
