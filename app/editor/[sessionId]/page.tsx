@@ -444,19 +444,88 @@ if (!sessionId) {
 if (sessionLoading) {
   return <p className="p-10">Loading session...</p>;}
 
+   // 🔥 COPY SESSION ID
+const copySessionId = () => {
+  navigator.clipboard.writeText(sessionId);
+  alert("Session ID copied!");
+};
+
+// 🔥 LEAVE SESSION
+const leaveSession = () => {
+  router.push("/dashboard");
+};
+
+// 🔥 END SESSION (MENTOR ONLY)
+const endSession = async () => {
+  await fetch("http://localhost:5000/session/end", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ sessionId }),
+  });
+
+  alert("Session ended");
+  router.push("/dashboard");
+};
+
   return (
   <div className="min-h-screen bg-gray-100 flex flex-col">
 
     {/* 🔥 HEADER (LIKE DASHBOARD) */}
     <div className="flex justify-between items-center px-6 py-4 bg-white shadow">
-      <h1 className="text-xl font-bold text-gray-500">
-        Mentor<span className="text-green-600">Ship</span>
-      </h1>
 
-      <div className="text-sm text-gray-600">
-        {user?.email} ({role})
-      </div>
-    </div>
+  {/* LEFT SIDE */}
+  <div>
+    <h1 className="text-xl font-bold text-gray-500">
+      Mentor<span className="text-green-600">Ship</span>
+    </h1>
+
+    {/* 🔥 NEW: SESSION ID */}
+    <p className="text-xs text-gray-400">
+      Session: {sessionId}
+    </p>
+  </div>
+
+  {/* RIGHT SIDE */}
+  <div className="flex items-center gap-3 text-sm text-gray-600">
+
+    {/* USER */}
+    <span>{user?.email}</span>
+
+    {/* 🔥 ROLE BADGE */}
+    <span className="bg-gray-200 px-2 py-1 rounded text-xs">
+      {role}
+    </span>
+
+    {/* 🔥 COPY BUTTON */}
+    <button
+      onClick={copySessionId}
+      className="bg-gray-300 px-3 py-1 rounded text-xs"
+    >
+      Copy ID
+    </button>
+
+    {/* 🔥 END SESSION (MENTOR ONLY) */}
+    {role === "mentor" && (
+      <button
+        onClick={endSession}
+        className="bg-red-500 text-white px-3 py-1 rounded text-xs"
+      >
+        End
+      </button>
+    )}
+
+    {/* 🔥 LEAVE */}
+    <button
+      onClick={leaveSession}
+      className="bg-blue-500 text-white px-3 py-1 rounded text-xs"
+    >
+      Leave
+    </button>
+
+  </div>
+</div>
 
     {/* 🔥 MAIN LAYOUT */}
     <div className="flex flex-1 p-4 gap-4">
