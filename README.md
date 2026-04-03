@@ -7,8 +7,8 @@ A production-grade real-time mentorship platform frontend built with **Next.js (
 
 ## 🌐 Live Deployment
 
-* 🔗 Frontend: https://your-frontend.vercel.app
-* 🔗 Backend API: https://your-backend.onrender.com
+* 🔗 Frontend: mentorship-platform-frontend-iota.vercel.app
+* 🔗 Backend API: https://mentorship-platform-backend-hbm1.onrender.com
 
 ---
 
