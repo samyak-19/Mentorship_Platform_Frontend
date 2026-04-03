@@ -261,7 +261,7 @@ Set env variables in Vercel dashboard.
 
 ## 👨‍💻 Author
 
-Your Name
+Samyak Bahade
 
 ---
 
