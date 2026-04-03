@@ -97,7 +97,7 @@ console.log("Button clicked 🚀");
       {/* 🔥 HEADER */}
       <div className="flex justify-between items-center mb-8 text-gray-500">
         <h1 className="text-2xl font-bold">
-          Mentor<span className="text-green-600">Hub</span>
+          Mentor<span className="text-green-600">Ship</span>
         </h1>
 
         <div className="flex items-center gap-4">
@@ -136,7 +136,7 @@ console.log("Button clicked 🚀");
         </div>
 
         {/* ✅ JOIN SESSION */}
-        <div className="bg-white p-6 rounded-xl shadow">
+        <div className="bg-white p-6 rounded-xl shadow text-gray-600">
           <h2 className="text-lg font-semibold mb-4">
             🚀 Join Session
           </h2>
