@@ -510,7 +510,7 @@ if (sessionLoading) {
           {/* VIDEO */}
           <div className="flex gap-2">
             <div className="w-1/2">
-              <p className="text-xs text-center mb-1">You</p>
+              <p className="text-xs text-center mb-1 text-gray-600">You</p>
               <video
                 ref={localVideoRef}
                 autoPlay
@@ -520,7 +520,7 @@ if (sessionLoading) {
             </div>
 
             <div className="w-1/2">
-              <p className="text-xs text-center mb-1">Other</p>
+              <p className="text-xs text-center mb-1 text-gray-600">Other</p>
               <video
                 ref={remoteVideoRef}
                 autoPlay
@@ -571,7 +571,7 @@ if (sessionLoading) {
           {/* INPUT */}
           <div className="flex mt-3 gap-2">
             <input
-              className="flex-1 border p-2 rounded"
+              className="flex-1 border p-2 rounded text-gray-600"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Type message..."
